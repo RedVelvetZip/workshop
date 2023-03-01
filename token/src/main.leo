@@ -59,7 +59,9 @@ program token.aleo {
         // Checks the given token record has sufficient balance.
         // This `sub` operation is safe, and the proof will fail if an overflow occurs.
         // `difference` holds the change amount to be returned to sender.
-        let difference: u64 = sender.amount - amount;
+        let difference: u64 = sender.amount - amount; 
+//^built in cmds for wrapping or saturation. default is safemath tho
+//will fail here if invalid amount
 
         // Produce a token record with the change amount for the sender.
         let remaining: token = token {
@@ -81,6 +83,7 @@ program token.aleo {
 
     // The function `transfer_private_to_public` turns a specified token amount from a token record into public tokens for the specified receiver.
     // This function preserves privacy for the sender's record, however it publicly reveals the token receiver and the token amount.
+//could anon deposit into a public acct. make a swap. then send back to deposit. can't see who but can show quantity this way
     transition transfer_private_to_public(sender: token, public receiver: address, public amount: u64) -> token {
         // Checks the given token record has a sufficient token amount.
         // This `sub` operation is safe, and the proof will fail if an underflow occurs.
@@ -98,7 +101,10 @@ program token.aleo {
         // Increment the token amount publicly for the token receiver.
         return remaining then finalize(receiver, amount);
     }
-
+//TODO: efficiency/cost difference to 
+//1. send 50 public and 50 priv to a public wallet (100 total)
+//2. send 50 priv to my public, then send 100 from public to another public
+//3. send 50 public to priv, then 100 from priv to another public
     finalize transfer_private_to_public(public receiver: address, public amount: u64) {
         // Increments `account[receiver]` by `amount`.
         // If `account[receiver]` does not exist, it will be created.

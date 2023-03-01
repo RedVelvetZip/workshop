@@ -1,3 +1,5 @@
+//can create real time gaming by taking it off chain and submitting results at the end to the chain. will then batch proof sequence of executions, is much faster 
+
 // The `program` scope defines the data types, functions, and state associated with the `tictactoe` program.
 program tictactoe.aleo {
     // A row in a tic tac toe board.
